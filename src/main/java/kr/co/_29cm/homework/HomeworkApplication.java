@@ -40,46 +40,19 @@ public class HomeworkApplication implements CommandLineRunner {
             String answer = scanner.next();
             scanner.nextLine();
             if (answer.equals("o") || answer.equals("order")) {
-                List<ProductResponseDto> productList = productService.getAllProduct();
-                System.out.println("상품정보    상호명                              판매가격            재고수");
-                productList.forEach((product) -> {
-                    System.out.println(product.getProductNumber() + "   " + product.getProductName() + "    " + product.getProductPrice() + "   " + product.getProductStock());
-                });
+                productService.getAllProduct();
 
                 boolean doOrder = true;
 
                 while (doOrder) {
                     System.out.print("상품번호 : ");
                     String productNumber = scanner.nextLine();
-                    System.out.print("수량 : ");
-                    String productCount = scanner.nextLine();
 
-                    if (productNumber.equals(" ") && productCount.equals(" ")) {
-                        System.out.println("주문내역 : ");
-                        System.out.println("--------------------------------------");
-                        List<OrderRequestDto> orderList = orderService.doOrder();
-                        int totalPrice = 0;
-
-                        for (OrderRequestDto order : orderList) {
-                            System.out.println(order.getProductName() + " - " + order.getProductCount() + "개");
-                            totalPrice += order.getProductPrice() * order.getProductCount();
-                        }
-                        System.out.println("--------------------------------------");
-                        if (totalPrice < 50000) {
-                            System.out.println("주문금액 : " + totalPrice);
-                            System.out.println("배송비 : " + 2500);
-                            System.out.println("--------------------------------------");
-                            System.out.println("지불금액 : " + (totalPrice + 2500));
-                            System.out.println("--------------------------------------");
-                        } else {
-                            System.out.println("주문금액 : " + totalPrice);
-                            System.out.println("--------------------------------------");
-                            System.out.println("지불금액 : " + totalPrice);
-                            System.out.println("--------------------------------------");
-                        }
-                        orderService.clearOrderList();
-                        doOrder = false;
+                    if (productNumber.equals(" ")) {
+                        doOrder = orderService.doOrder();
                     } else {
+                        System.out.print("수량 : ");
+                        String productCount = scanner.nextLine();
                         Product product = productService.getProduct(Long.valueOf(productNumber));
                         orderService.addOrder(product, Integer.parseInt(productCount));
                     }
