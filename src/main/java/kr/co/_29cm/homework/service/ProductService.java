@@ -25,11 +25,9 @@ public class ProductService {
         return dtoList;
     }
 
-    public ProductResponseDto getProduct(Long productNumber) {
-        Product product = productRepository.findByProductNumber(productNumber);
-        ProductResponseDto responseDto = ProductResponseDto.builder()
-                .product(product)
-                .build();
-        return responseDto;
+    public Product getProduct(Long productNumber) {
+        Product product = productRepository.findByProductNumber(productNumber)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
+        return product;
     }
 }
