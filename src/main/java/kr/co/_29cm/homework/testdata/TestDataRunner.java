@@ -59,7 +59,7 @@ public class TestDataRunner implements ApplicationRunner {
 
     }
 
-    public Product createProduct(Long productNumber, String productName, int productPrice, int productStock) {
+    private Product createProduct(Long productNumber, String productName, int productPrice, int productStock) {
         Product product = Product.builder()
                 .productNumber(productNumber)
                 .productName(productName)
