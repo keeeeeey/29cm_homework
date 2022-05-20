@@ -45,6 +45,13 @@ public class HomeworkApplication implements CommandLineRunner {
                     System.out.print("상품번호 : ");
                     String productNumber = scanner.nextLine();
 
+                    boolean checkProduct = productService.checkProduct(Long.valueOf(productNumber));
+
+                    if (checkProduct == false) {
+                        System.out.println("존재하지 않는 상품입니다.");
+                        continue;
+                    }
+
                     if (productNumber.equals(" ")) {
                         doOrder = orderService.doOrder();
                     } else {
