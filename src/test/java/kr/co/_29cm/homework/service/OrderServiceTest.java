@@ -5,6 +5,7 @@ import kr.co._29cm.homework.entity.Product;
 import kr.co._29cm.homework.repository.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,7 @@ public class OrderServiceTest {
     ProductRepository productRepository;
 
     @Test
+    @DisplayName("SoldOutException 테스트")
     public void test() {
         Optional<Product> product1 = productRepository.findByProductNumber((long) 768848);
         Order order1 = Order.builder()
