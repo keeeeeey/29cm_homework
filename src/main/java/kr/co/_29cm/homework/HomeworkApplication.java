@@ -1,7 +1,5 @@
 package kr.co._29cm.homework;
 
-import kr.co._29cm.homework.dto.request.OrderRequestDto;
-import kr.co._29cm.homework.dto.response.ProductResponseDto;
 import kr.co._29cm.homework.entity.Product;
 import kr.co._29cm.homework.service.OrderService;
 import kr.co._29cm.homework.service.ProductService;
@@ -12,7 +10,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.annotation.Order;
 
-import java.util.List;
 import java.util.Scanner;
 
 @SpringBootApplication

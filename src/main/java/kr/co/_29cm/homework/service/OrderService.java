@@ -1,6 +1,6 @@
 package kr.co._29cm.homework.service;
 
-import kr.co._29cm.homework.dto.request.OrderRequestDto;
+import kr.co._29cm.homework.entity.Order;
 import kr.co._29cm.homework.entity.Product;
 import kr.co._29cm.homework.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,21 +14,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
 
-    List<OrderRequestDto> requestDtoList = new ArrayList<>();
+    List<Order> orderList = new ArrayList<>();
 
     private final ProductRepository productRepository;
 
     public void addOrder(Product product, int productCount) {
-        OrderRequestDto requestDto = OrderRequestDto.builder()
+        Order order = Order.builder()
                 .product(product)
                 .productCount(productCount)
                 .build();
-        requestDtoList.add(requestDto);
+        orderList.add(order);
     }
 
     @Transactional
     public boolean doOrder() {
-        for (OrderRequestDto order : requestDtoList) {
+        for (Order order : orderList) {
             Product product = productRepository.findByProductName(order.getProductName())
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
 
@@ -43,7 +43,7 @@ public class OrderService {
         System.out.println("주문내역 : ");
         System.out.println("--------------------------------------");
 
-        for (OrderRequestDto order : requestDtoList) {
+        for (Order order : orderList) {
             Product product = productRepository.findByProductName(order.getProductName())
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
             product.minusProductStock(order.getProductCount());
@@ -64,7 +64,7 @@ public class OrderService {
             System.out.println("지불금액 : " + totalPrice);
             System.out.println("--------------------------------------");
         }
-        requestDtoList.clear();
+        orderList.clear();
         return false;
     }
 

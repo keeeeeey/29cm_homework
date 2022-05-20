@@ -17,10 +17,10 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private Long productNumber;
 
-    @Column
+    @Column(unique = true)
     private String productName;
 
     @Column
