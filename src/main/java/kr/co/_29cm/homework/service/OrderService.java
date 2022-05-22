@@ -5,11 +5,9 @@ import kr.co._29cm.homework.entity.Product;
 import kr.co._29cm.homework.repository.OrderRepository;
 import kr.co._29cm.homework.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ordering.antlr.OrderByAliasResolver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -61,17 +59,22 @@ public class OrderService {
 
     private boolean checkProductStock() {
         List<Order> orderList = orderRepository.findAll();
-        for (Order order : orderList) {
-            Product product = productRepository.findByProductName(order.getProductName())
-                    .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
+        try {
+            for (Order order : orderList) {
+                Product product = productRepository.findByProductName(order.getProductName())
+                        .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
 
-            if (order.getProductCount() > product.getProductStock()) {
-                System.out.println("SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
-                orderList.clear();
-                return false;
+                if (order.getProductCount() > product.getProductStock()) {
+                    throw new Exception();
+                }
             }
+            return true;
+        } catch(Exception e) {
+            System.out.println("SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
+            orderRepository.deleteAll();
+            return false;
         }
-        return true;
+
     }
 
     private int getTotalPriceAndPrintOrderList(int totalPrice) {
