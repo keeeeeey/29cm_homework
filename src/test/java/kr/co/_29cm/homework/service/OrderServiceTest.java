@@ -7,17 +7,19 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
 
-    @Autowired
+    @Mock
     ProductRepository productRepository;
 
     @Test
@@ -73,7 +75,7 @@ public class OrderServiceTest {
         @Override
         public void run() {
             try{
-                for(int i = 0; i < 5; i++){
+                for (int i = 0; i < 5; i++) {
                     if (order.getProductCount() > product.getProductStock()) {
                         System.out.println(product.getProductNumber() + "SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
                     } else {
