@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Service
@@ -27,7 +28,10 @@ public class OrderService {
 
     @Transactional
     public boolean doOrder() {
-        boolean checkProduct = checkProductStock();
+        DecimalFormat decFormat = new DecimalFormat("###,###");
+
+        List<Order> orderList = orderRepository.findAll();
+        boolean checkProduct = checkProductStock(orderList);
 
         if (checkProduct == false) {
             return false;
@@ -38,27 +42,26 @@ public class OrderService {
         System.out.println("주문내역 : ");
         System.out.println("--------------------------------------");
 
-        totalPrice = getTotalPriceAndPrintOrderList(totalPrice);
+        totalPrice = getTotalPriceAndPrintOrderList(orderList, totalPrice);
 
         System.out.println("--------------------------------------");
         if (totalPrice < 50000) {
-            System.out.println("주문금액 : " + totalPrice);
-            System.out.println("배송비 : " + 2500);
+            System.out.println("주문금액 : " + decFormat.format(totalPrice) + "원");
+            System.out.println("배송비 : " + decFormat.format(2500) + "원");
             System.out.println("--------------------------------------");
-            System.out.println("지불금액 : " + (totalPrice + 2500));
+            System.out.println("지불금액 : " + decFormat.format(totalPrice + 2500) + "원");
             System.out.println("--------------------------------------");
         } else {
-            System.out.println("주문금액 : " + totalPrice);
+            System.out.println("주문금액 : " + decFormat.format(totalPrice) + "원");
             System.out.println("--------------------------------------");
-            System.out.println("지불금액 : " + totalPrice);
+            System.out.println("지불금액 : " + decFormat.format(totalPrice) + "원");
             System.out.println("--------------------------------------");
         }
         orderRepository.deleteAll();
         return false;
     }
 
-    private boolean checkProductStock() {
-        List<Order> orderList = orderRepository.findAll();
+    private boolean checkProductStock(List<Order> orderList) {
         try {
             for (Order order : orderList) {
                 Product product = productRepository.findByProductName(order.getProductName())
@@ -69,6 +72,7 @@ public class OrderService {
                 }
             }
             return true;
+
         } catch(Exception e) {
             System.out.println("SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
             orderRepository.deleteAll();
@@ -77,8 +81,7 @@ public class OrderService {
 
     }
 
-    private int getTotalPriceAndPrintOrderList(int totalPrice) {
-        List<Order> orderList = orderRepository.findAll();
+    private int getTotalPriceAndPrintOrderList(List<Order> orderList, int totalPrice) {
         for (Order order : orderList) {
             Product product = productRepository.findByProductName(order.getProductName())
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
