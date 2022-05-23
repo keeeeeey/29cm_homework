@@ -88,11 +88,11 @@ public class OrderServiceTest {
                 for (int i = 0; i < 5; i++) {
                     orderService.doOrder();
                 }
-                Thread.sleep(2000);
+                System.out.println(threadName + " 쓰레드 종료");
+                Thread.sleep(1000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println(threadName + " 쓰레드 종료");
         }
 
     }

@@ -44,6 +44,7 @@ OrderProduct 엔티티라는 중간 엔티티로 엮어 M:M 연관관계를 1:M:
 ### OrderService
 - addOrder() : 주문 테이블에 getProduct() 메소드로 조회한 상품 추가
 - doOrder() : " " 입력시 주문테이블에 들어가 있는 상품 주문
+  - 상품 주문시 Product 테이블의 상품 재고 수 주문 수만큼 차감
 - checkProductStock() : 주문 수량이 재고 수량보다 많은지 체크
 - getTotalPriceAndPrintOrderList() : 주문 리스트 출력 및 전체 주문 상품 가격 계산
 
