@@ -52,6 +52,12 @@ public class OrderApplication implements CommandLineRunner {
                     } else {
                         System.out.print("수량 : ");
                         String productCount = scanner.nextLine();
+
+                        if (productCount.trim().isEmpty() || !productCount.matches("^[1-9][0-9]*$")) {
+                            System.out.println("정확한 수량을 입력해주세요.");
+                            continue;
+                        }
+
                         Product product = productService.getProduct(Long.valueOf(productNumber));
                         orderService.addOrder(product, Integer.parseInt(productCount));
                     }
