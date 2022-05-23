@@ -70,7 +70,7 @@ Product product = Product.builder()
                 .build();
 ```
 하나의 Product를 생성하고 4개의 쓰레드를 생성하여 5개씩 20번 주문을 했을때 9번의 주문 성공과 11번의 SoldOutException 이 발생해야 함
-
+![img.png](img.png)
 하지만 테스트 결과 SoldOutException 결과가 랜덤하게 출력되었고 4개의 스레드가 동시에 doOrder() 메소드에 접근하여 재고 개수가 제대로 카운트 안되서 발생하는 문제
 
 ```java
