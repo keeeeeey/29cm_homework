@@ -78,4 +78,4 @@ Product product = Product.builder()
     }
 ```
 
-addOrder() 메소드에 synchronized를 선언하여 동시성 문제 해결
+doOrder() 메소드에 synchronized를 선언하여 동시성 문제 해결
