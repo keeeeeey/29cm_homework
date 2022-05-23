@@ -25,8 +25,7 @@ public class OrderApplication implements CommandLineRunner {
         boolean run = true;
         do {
             System.out.print("입력(o[order]: 주문, q[quit]: 종료) : ");
-            String answer = scanner.next();
-            scanner.nextLine();
+            String answer = scanner.nextLine();
             if (answer.equals("o") || answer.equals("order")) {
                 productService.getAllProduct();
 
@@ -66,6 +65,8 @@ public class OrderApplication implements CommandLineRunner {
 
             } else if (answer.equals("q") || answer.equals("quit")) {
                 run = false;
+            } else if (answer.trim().isEmpty()) {
+                System.out.println("올바른 입력값이 아닙니다.");
             } else {
                 System.out.println("올바른 입력값이 아닙니다.");
             }

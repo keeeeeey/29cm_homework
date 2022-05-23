@@ -36,6 +36,12 @@ OrderProduct 엔티티라는 중간 엔티티로 엮어 M:M 연관관계를 1:M:
 - HomewordkApplication <br>
 - OrderApplication
 
+### OrderApplication
+- "입력(o[order]: 주문, q[quit]: 종료) : " : 다른 키워드 입력시 "올바른 입력값이 아닙니다." 메세지 출력
+- "상품번호 : " : 존재하지 않은 상품번호나 공백 입력시 "존재하지 않는 상품입니다." 메세지 출력
+- "수량 : " : 공백을 입력하거나 자연수가 아닐시 "정확한 수량을 입력해주세요." 메세지 출력
+- "space" : 입력시 OrderService.doOrder() 실행
+
 ### ProductService
 - getAllProduct() : 주문 선택시 상품리스트 조회
 - getProduct() : 주문 테이블에 추가하기 위해 상품 단건 조회
