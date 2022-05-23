@@ -53,9 +53,13 @@ public class OrderServiceTest {
         Runnable r = new CheckThread(order, product, orderService);
 
         Thread t1 = new Thread(r);
+        t1.setName("쓰레드1");
         Thread t2 = new Thread(r);
+        t2.setName("쓰레드2");
         Thread t3 = new Thread(r);
+        t3.setName("쓰레드3");
         Thread t4 = new Thread(r);
+        t4.setName("쓰레드4");
 
         t1.start();
         t2.start();
@@ -78,17 +82,17 @@ public class OrderServiceTest {
 
         @Override
         public void run() {
+            String threadName = Thread.currentThread().getName();
             try{
+                System.out.println(threadName + " 쓰레드 시작");
                 for (int i = 0; i < 5; i++) {
                     orderService.doOrder();
                 }
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (Exception e) {
-                System.out.println(e.toString());
-            } finally {
-                System.out.println("쓰레드 종료");
+                e.printStackTrace();
             }
-
+            System.out.println(threadName + " 쓰레드 종료");
         }
 
     }

@@ -27,22 +27,24 @@ public class OrderService {
     }
 
     @Transactional
-    public boolean doOrder() {
+    public synchronized boolean doOrder() {
         DecimalFormat decFormat = new DecimalFormat("###,###");
 
         List<Order> orderList = orderRepository.findAll();
-        boolean checkProduct = checkProductStock(orderList);
+        if (orderList.isEmpty()) {
+            System.out.println("주문상품이 없습니다.");
+            return false;
+        }
 
+        boolean checkProduct = checkProductStock(orderList);
         if (checkProduct == false) {
             return false;
         }
 
-        int totalPrice = 0;
-
         System.out.println("주문내역 : ");
         System.out.println("--------------------------------------");
 
-        totalPrice = getTotalPriceAndPrintOrderList(orderList, totalPrice);
+        int totalPrice = getTotalPriceAndPrintOrderList(orderList);
 
         System.out.println("--------------------------------------");
         if (totalPrice < 50000) {
@@ -73,7 +75,7 @@ public class OrderService {
             }
             return true;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
             orderRepository.deleteAll();
             return false;
@@ -81,11 +83,14 @@ public class OrderService {
 
     }
 
-    private int getTotalPriceAndPrintOrderList(List<Order> orderList, int totalPrice) {
+    private int getTotalPriceAndPrintOrderList(List<Order> orderList) {
+        int totalPrice = 0;
         for (Order order : orderList) {
             Product product = productRepository.findByProductName(order.getProductName())
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 상품입니다."));
+
             product.minusProductStock(order.getProductCount());
+
             System.out.println(order.getProductName() + " - " + order.getProductCount() + "개");
             totalPrice += order.getProductPrice() * order.getProductCount();
         }
